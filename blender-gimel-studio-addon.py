@@ -16,7 +16,6 @@
 
 
 import os
-import shutil
 import tempfile
 from subprocess import Popen, PIPE
 
@@ -29,10 +28,10 @@ bl_info = {
     "category": "Render",
     'description': 'Allows for editing renders from Blender in Gimel Studio',
     'license': 'Apache 2.0',
-    'version': (0, 1),
+    'version': (0, 2),
     'blender': (2, 83, 0),
     'location': 'Compositing > Gimel Studio',
-    'warning': 'Still in development!',
+    'warning': 'Still in development! WIP!',
 }
 
 
@@ -43,53 +42,40 @@ class GimelStudioOperation(bpy.types.Operator):
         
         
     def execute(self, context):
-        exe = bpy.path.abspath(context.preferences.addons[__name__].preferences.filepath)
-        print(exe)
-        projpath = bpy.data.filepath
-        directory = os.path.dirname(projpath)
+        pref_fp = context.preferences.addons[__name__].preferences.filepath
+        exe_path = bpy.path.abspath(pref_fp)
+        project_path = bpy.data.filepath
+        directory = os.path.dirname(project_path)
         
-        
-        # Save the temp img
+        # Save the temp image
         if bpy.data.is_saved:
-            dirname = os.path.join(tempfile.gettempdir(),'blendergimelstudioaddon_temp')
+            dirname = os.path.join(tempfile.gettempdir(),
+                                   'BlenderGimelStudioAddonTemp')
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
             else:
                 pass
                 
-            output = os.path.join(dirname,'img.png')
-            #bpy.context.scene.render.filepath = output
-            #bpy.ops.render.render(write_still = True) 
+            output_path = os.path.join(dirname,'temp.png')
+            image = bpy.data.images["Render Result"].save_render(output_path)         
             
-        #import os
-        #with open(os.path.splitext() + ".txt", 'w') as fs:
-        #fs.write("%s %d x %d\n" % (image.filepath, image.size[0], image.size[1]))          
-            
-            # write images into a file next to the blend
-            #with open(os.path.splitext(bpy.data.filepath)[0] + ".txt", 'w') as fs:
-             #   for image in bpy.data.images:
-              #      fs.write("%s %d x %d\n" % (image.filepath, image.size[0], image.size[1]))      
-            image = bpy.data.images["Render Result"].save_render(output)         
-            
-            
-        
         else:
             self.report({'ERROR'}, 'File not saved!')
             return {'CANCELLED'}
-        
-        process = Popen([exe], stdin=PIPE, stdout=PIPE)
-        
 
+        # Pass the path to the temp image as an arg to the
+        # Gimel Studio executable on launch in another process.
+        process = Popen([exe_path, '--blender', output_path],
+                        stdin=PIPE, stdout=PIPE)
+        
         return {'FINISHED'}
 
 
 class GimelStudioPrefs(bpy.types.AddonPreferences):
     bl_idname = __name__
 
-    filepath: bpy.props.StringProperty(
-        name="Gimel Studio Executable",
-        subtype='FILE_PATH',
-    )
+    filepath: bpy.props.StringProperty(name="Gimel Studio Executable",
+                                       subtype='FILE_PATH')
 
     def draw(self, context):
         layout = self.layout
@@ -110,7 +96,8 @@ class GimelStudioPanel(bpy.types.Panel):
         layout = self.layout
 
         row = layout.row()
-        row.label(text="Edit the current rendered image in Gimel Studio", icon='IMAGE_DATA')
+        row.label(text="Edit the current rendered image in Gimel Studio",
+                  icon='IMAGE_DATA')
 
         row = layout.row()
         row.operator(GimelStudioOperation.bl_idname)
@@ -128,12 +115,6 @@ def register():
     from bpy.utils import register_class
     for c in classes:
         bpy.utils.register_class(c)
-
-    try:
-        pass
-        #os.remove(os.path.join(tempfile.gettempdir(), ''))
-    except:
-        pass
 
 
 def unregister():
