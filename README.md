@@ -7,6 +7,8 @@ Blender 2.8+ bridge addon allowing users to edit rendered images from Blender in
 
 **STILL WIP! UNSTABLE!** 
 
+v0.2 Alpha release can be found [here](https://github.com/Correct-Syntax/Blender-Gimel-Studio-Addon/releases).
+
 # Contributing
 
-PRs and ideas are welcome!
+PRs, feedback and great ideas are welcome!
