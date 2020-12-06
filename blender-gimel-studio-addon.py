@@ -39,14 +39,14 @@ class GimelStudioOperation(bpy.types.Operator):
     """Edit the current rendered image in the Gimel Studio program"""
     bl_idname = "render.gimel_studio_editing"
     bl_label = "Launch Gimel Studio"
-        
-        
+
+
     def execute(self, context):
         pref_fp = context.preferences.addons[__name__].preferences.filepath
         exe_path = bpy.path.abspath(pref_fp)
         project_path = bpy.data.filepath
         directory = os.path.dirname(project_path)
-        
+
         # Save the temp image
         if bpy.data.is_saved:
             dirname = os.path.join(tempfile.gettempdir(),
@@ -55,10 +55,10 @@ class GimelStudioOperation(bpy.types.Operator):
                 os.makedirs(dirname)
             else:
                 pass
-                
+
             output_path = os.path.join(dirname,'temp.png')
-            image = bpy.data.images["Render Result"].save_render(output_path)         
-            
+            image = bpy.data.images["Render Result"].save_render(output_path)
+
         else:
             self.report({'ERROR'}, 'File not saved!')
             return {'CANCELLED'}
@@ -67,7 +67,7 @@ class GimelStudioOperation(bpy.types.Operator):
         # Gimel Studio executable on launch in another process.
         process = Popen([exe_path, '--blender', output_path],
                         stdin=PIPE, stdout=PIPE)
-        
+
         return {'FINISHED'}
 
 
@@ -91,6 +91,11 @@ class GimelStudioPanel(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_context = "View"
     bl_category = "Gimel Studio"
+
+    @classmethod
+    def poll(cls, context):
+        snode = context.space_data
+        return snode.tree_type == 'CompositorNodeTree'
 
     def draw(self, context):
         layout = self.layout
