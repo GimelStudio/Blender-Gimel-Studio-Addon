@@ -19,17 +19,24 @@ v0.2.5 Alpha release can be found [here](https://github.com/Correct-Syntax/Blend
 - Add multiple Image nodes to the Gimel Studio node graph via the addon (useful for layers).
 
 
+# Installation & Setup
+
+1. Install like a normal Blender addon and enable it.
+2. Specify the path to the Gimel Studio application in the addon preferences.
+
+
 # Usage
 
-Install like a normal Blender addon.
+1. Make sure your blender file is saved to your hard-drive and render your image with keyboard shortcut ``F12``.
+2. Click on the *Compositor* tab and check the *Use Nodes* checkbox.
+3. Access the addon in the Blender compositor (right) panel, *Gimel Studio* tab.
+4. Click the *Launch Gimel Studio* button and your render will appear in the launched Gimel Studio instance.
 
 **Notes:**
 
- - Path to Gimel Studio executable must be specified in the addon's preferences.
- - Integrates with Gimel Studio v0.5.0+ only.
+ - Integrates with Gimel Studio v0.5.0 beta and onwards only.
  - Blender file must be saved.
  - Scene must be rendered.
- - Access the addon in the Blender compositor (right) panel, *Gimel Studio* tab.
 
 
 # Contributing
