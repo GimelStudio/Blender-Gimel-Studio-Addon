@@ -3,10 +3,12 @@ Blender Gimel Studio Addon
 
 Blender 2.8+ bridge addon allowing users to edit rendered images from Blender in <a href="https://github.com/Correct-Syntax/Gimel-Studio">Gimel Studio</a>.
 
+**Currently only integrates with Gimel Studio v0.5.0 beta through v0.5.3 beta. Stay tuned for updates to make this compatible with the v0.6.x series.**
+
 
 # Download
 
-v0.2.5 Alpha release can be found [here](https://github.com/Correct-Syntax/Blender-Gimel-Studio-Addon/releases).
+v0.2.5 Alpha release can be found [here](https://github.com/GimelStudio/Blender-Gimel-Studio-Addon/releases).
 
 
 # Status
@@ -34,7 +36,7 @@ v0.2.5 Alpha release can be found [here](https://github.com/Correct-Syntax/Blend
 
 **Notes:**
 
- - Integrates with Gimel Studio v0.5.0 beta and onwards only.
+ - Currently only integrates with Gimel Studio v0.5.0 beta through v0.5.3 beta.
  - Blender file must be saved.
  - Scene must be rendered.
 
